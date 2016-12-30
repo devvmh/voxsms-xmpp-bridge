@@ -27,7 +27,7 @@ function readMessages() {
   const allMessages = []
   db.each(`SELECT to_did, from_did, timestamp, message FROM messages`, function(err, row) {
     const { to_did, from_did, timestamp, message } = row
-    allMessages.push({ to, from, timestamp, message })
+    allMessages.push({ to_did, from_did, timestamp, message })
   })
   return allMessages.sort((a,b) => {
     a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0
