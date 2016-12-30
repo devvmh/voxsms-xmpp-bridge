@@ -26,7 +26,7 @@ function receive(to, from, msg) {
 function readMessages() {
   const allMessages = []
   db.each(`SELECT to_did, from_did, timestamp, message FROM messages`, function(err, row) {
-    const { to, from, timestamp, message } = row
+    const { to_did, from_did, timestamp, message } = row
     allMessages.push({ to, from, timestamp, message })
   })
   return allMessages.sort((a,b) => {
