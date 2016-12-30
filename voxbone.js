@@ -2,8 +2,7 @@ const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('messages.sqlite')
 
 const Voxbone = require('voxbone-voxsms')
-const apiLogin = 'devin2'
-const apiPassword = 'Devin123!@#'
+const { apiLogin, apiPassword } = require('./secrets')
 const voxbone = new Voxbone({ apiLogin, apiPassword })
 
 function sanitize(msg) {
