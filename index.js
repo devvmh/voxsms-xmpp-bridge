@@ -1,9 +1,13 @@
-var express = require('express')
-var bodyParser = require('body-parser');
-var app = express()
-app.use(bodyParser.json()) // for parsing application/json
+const express = require('express')
+const exphbs  = require('express-handlebars');
+const bodyParser = require('body-parser');
+const app = express()
 
-const { send, receive } = require('./voxbone')
+app.use(bodyParser.json()) // for parsing application/json
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.set('view engine', 'handlebars')
+
+const { send, receive, readMessages } = require('./voxbone')
  
 app.post('/send/:did', function (req, res) {
   const { from, msg } = req.body
@@ -14,8 +18,9 @@ app.post('/send/:did', function (req, res) {
   res.sendStatus(200)
 })
 
-app.get('/messages/:did', function(req, res) {
-  res.send('Whoops, unimplemented')
+app.get('/messages', function(req, res) {
+  const messages = readMessages()
+  res.render('messages', { messages })
 })
 
 /*

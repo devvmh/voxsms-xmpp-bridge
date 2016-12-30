@@ -23,5 +23,16 @@ function receive(to, from, msg) {
   db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
 
+function readMessages() {
+  const allMessages = []
+  db.each(`SELECT to_did, from_did, timestamp, message FROM messages`, function(err, row) {
+    const { to, from, timestamp, message } = row
+    allMessages.push({ to, from, timestamp, message })
+  })
+  return allMessages.sort((a,b) => {
+    a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0
+  })
+}
+
 // send 11 digit numbers e.g. 12262201584 for from/to when using send/receive
-module.exports = { send, receive }
+module.exports = { send, receive, readMessages }

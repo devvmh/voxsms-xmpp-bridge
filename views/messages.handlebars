@@ -1,0 +1,20 @@
+<h1>Testing messages</h1>
+
+<table class="table">
+  <thead><tr>
+    <th class="to">To</th>
+    <th class="from">From</th>
+    <th class="timestamp">Timestamp</th>
+    <th class="message">Message</th>
+  </tr></thead>
+  <tbody>
+    {{#each allMessages}}
+      <tr>
+        <td class="to">{{to}}</td>
+        <td class="from">{{from}}</td>
+        <td class="timestamp">{{timestamp}}</td>
+        <td class="message">{{message}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
