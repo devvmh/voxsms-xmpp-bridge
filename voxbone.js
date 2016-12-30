@@ -14,9 +14,6 @@ function getDate() {
   return (new Date().getTime() / 1000).toFixed(0)
 }
 
-// const to = "12263363620"
-// const from = "12262201584"
-// const msg = "message sent from npm app"
 function send(to, from, msg, dr = 'none') {
   const fragref = voxbone.createFragRef()
   voxbone.sendSMS(to, `+${from}`, msg, fragref)
@@ -24,7 +21,8 @@ function send(to, from, msg, dr = 'none') {
 }
 
 function receive(to, from, msg) {
-  db.run(`INSERT INTO messages VALUES ('${to}', '${from.replace('+', '')}', ${getDate()}, "${sanitize(msg)}")`)
+  db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
 
+// send 11 digit numbers e.g. 12262201584 for from/to when using send/receive
 module.exports = { send, receive }

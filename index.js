@@ -10,7 +10,7 @@ app.post('/send/:did', function (req, res) {
   const to = req.params.did
 
   console.log(`send(${to}, ${from}, ${msg})`)
-  send(to, from, msg)
+  send(to.replace('+', ''), from.replace('+', ''), msg)
   res.sendStatus(200)
 })
 
@@ -31,7 +31,7 @@ app.get('/messages/:did', function(req, res) {
 app.post('/receive/:did', function(req, res) {
   const { from, msg, time, uuid } = req.body
   const to = req.params.did
-  receive(to, from, msg)
+  receive(to.replace('+', ''), from.replace('+', ''), msg)
   res.sendStatus(200)
 })
  
