@@ -2,9 +2,20 @@ var express = require('express')
 var bodyParser = require('body-parser');
 var app = express()
 app.use(bodyParser.json()) // for parsing application/json
+
+const { send, receive } = require('./voxbone')
  
-app.get('/send', function (req, res) {
-  res.send('Hello World')
+app.post('/send/:did', function (req, res) {
+  const { from, msg } = req.body
+  const to = req.params.did
+
+  console.log(`send(${to}, ${from}, ${msg})`)
+  send(to, from, msg)
+  res.sendStatus(200)
+})
+
+app.get('/messages/:did', function(req, res) {
+  res.send('Whoops, unimplemented')
 })
 
 /*
@@ -18,7 +29,10 @@ app.get('/send', function (req, res) {
  * {"msg":"Devin attempt 3","from":"+12263363620","time":"2016-12-30 05:43:16","uuid":"f49f2326a0a74595bec7169b21100bcc"}
  */
 app.post('/receive/:did', function(req, res) {
-  res.send(Object.keys(req.body) + ' and ' + req.params.did + "\n")
+  const { from, msg, time, uuid } = req.body
+  const to = req.params.did
+  receive(to, from, msg)
+  res.sendStatus(200)
 })
  
 app.listen(process.env.PORT || 8080)
