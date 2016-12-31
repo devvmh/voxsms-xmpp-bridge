@@ -30,6 +30,7 @@ function readMessages(did) {
   if (did !== null) {
     query += ` WHERE to_did = '${did}' OR from_did = '${did}'`
   }
+  query += ' ORDER BY timestamp DESC'
   db.each(query, function(err, row) {
     const { to_did, from_did, timestamp, message } = row
     const formatted_time = new Date(timestamp * 1000).toString().substring(0, 24)
