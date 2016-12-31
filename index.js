@@ -10,7 +10,7 @@ const app = express()
 app.use(bodyParser.json()) // for parsing application/json
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
-app.use(basicAuth({ users })
+app.use(basicAuth({ users }))
 
 app.get('/', function(req, res) {
   res.redirect('/messages')
