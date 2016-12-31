@@ -1,7 +1,5 @@
 {{> send}}
 
 {{#each conversations}}
-  {{> conversation id=@key did=@key messages=this}}
+  {{> conversation did=@key messages=this}}
 {{/each}}
-
-{{> conversation id='all' did='All Messages' messages=messages}}

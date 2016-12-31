@@ -1,22 +1,20 @@
 <div class="collapser">
-  <h4><label for="collapser-{{id}}">{{did}} (+/-)</label></h4>
-  <input type="checkbox" id="collapser-{{id}}" class="collapsible-tables" />
-  <table class="table">
-    <thead><tr>
-      <th class="to_did">To</th>
-      <th class="from_did">From</th>
-      <th class="timestamp">Timestamp</th>
-      <th class="message">Message</th>
-    </tr></thead>
-    <tbody>
-      {{#each messages}}
-        <tr>
-          <td class="to_did">{{to_did}}</td>
-          <td class="from_did">{{from_did}}</td>
-          <td class="formatted_time">{{formatted_time}}</td>
-          <td class="message">{{message}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+  <h4><label for="collapser-{{did}}">{{did}} (+/-)</label></h4>
+  <input type="checkbox" id="collapser-{{did}}" class="collapsible-tables" />
+
+  {{#each messages}}
+    <div class="conversation-messages">
+      {{#if fromMe}}
+        <div class="message-wrapper from-me">
+          <span class="formatted_time">{{formatted_time}}</span>
+          <div class="message bg-info" title="me">{{message}}</div>
+        </div>
+      {{else}}
+        <div class="message-wrapper to-me">
+          <div class="message bg-warning" title="{{from_did}}">{{message}}</div>
+          <span class="formatted_time">{{formatted_time}}</span>
+        </div>
+      {{/if}}
+    </div>
+  {{/each}}
 </div>

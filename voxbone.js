@@ -36,7 +36,7 @@ function readMessages(did) {
     allMessages.push({ to_did, from_did, formatted_time, message })
     const otherDid = to_did === did ? from_did : to_did
     if (!conversations[otherDid]) conversations[otherDid] = []
-    conversations[otherDid].push({ to_did, from_did, formatted_time, message })
+    conversations[otherDid].push({ to_did, from_did, formatted_time, message, fromMe: did === from_did })
   })
   return [allMessages.sort((a,b) => {
     a.timestamp < b.timestamp ? -1 : a.timestamp > b.timestamp ? 1 : 0
