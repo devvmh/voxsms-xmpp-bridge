@@ -61,6 +61,9 @@
     }).then(payload => {
       console.log(payload)
       window.location.reload()
-    }).catch(console.error)
+    }).catch(error => {
+      alert("Something went wrong")
+      console.error(error)
+    })
   })
 </script>
