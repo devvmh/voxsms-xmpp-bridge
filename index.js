@@ -9,6 +9,10 @@ app.set('view engine', 'handlebars')
 
 const { send, receive, readMessages } = require('./voxbone')
 const { fromDidList } = require('./secrets')
+
+app.get('/', function(req, res) {
+  res.redirect('/messages')
+})
  
 app.get('/messages', function(req, res) {
   res.render('messages_index', { didList: fromDidList })
