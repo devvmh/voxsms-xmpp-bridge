@@ -10,18 +10,26 @@ app.set('view engine', 'handlebars')
 const { send, receive, readMessages } = require('./voxbone')
 const { fromDidList } = require('./secrets')
  
+app.get('/messages', function(req, res) {
+  const messages = readMessages()
+  res.render('messages', { messages, fromDidList })
+})
+
+app.get('/messages/:did', function(req, res) {
+  if (fromDidList.indexOf(did) === -1) {
+    res.sendStatus(404)
+    return
+  }
+  const messages = readMessages(did)
+  res.render('messages', { messages, [did] })
+})
+
 app.post('/send/:did', function (req, res) {
   const { from, msg } = req.body
   const to = req.params.did
 
-  console.log(`send(${to}, ${from}, ${msg})`)
   send(to.replace('+', ''), from.replace('+', ''), msg)
   res.sendStatus(200)
-})
-
-app.get('/messages', function(req, res) {
-  const messages = readMessages()
-  res.render('messages', { messages, fromDidList })
 })
 
 /*
