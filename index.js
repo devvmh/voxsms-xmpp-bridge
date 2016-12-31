@@ -16,6 +16,7 @@ app.get('/messages', function(req, res) {
 })
 
 app.get('/messages/:did', function(req, res) {
+  const { did } = req.params
   if (fromDidList.indexOf(did) === -1) {
     res.sendStatus(404)
     return
