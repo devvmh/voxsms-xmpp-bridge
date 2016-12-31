@@ -1,12 +1,12 @@
 <h1>Verdexus SMS Messages</h1>
 
-<select id="non-working-send_from_did">                                           <option value="">-- From --</option>
+<select id="send_from_did">
+  <option value="">-- From --</option>
   {{#each fromDidList}}
     <option value="{{this}}">{{this}}</option>
   {{/each}}
 </select> <br />
-<input id="send_from_did" type="text" placeholder="From" /> <br />
-<input id="send_to_did" type="text" placeholder="To" /> <br />
+<input id="send_to_did" type="text" placeholder="To: e.g. 15198460550" /> <br />
 <label>
   Message: <br />
   <textarea id="send_message" rows="5" cols="60"></textarea>
