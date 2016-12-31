@@ -1,9 +1,9 @@
-<div class="collapser">
+<div class="collapsible-wrapper">
   <h4><label for="collapser-{{did}}">{{did}} (+/-)</label></h4>
-  <input type="checkbox" id="collapser-{{did}}" class="collapsible-tables" />
+  <input type="checkbox" id="collapser-{{did}}" class="collapser" checked="checked"/>
 
   {{#each messages}}
-    <div class="conversation-messages">
+    <div class="conversation-messages collapsible">
       {{#if fromMe}}
         <div class="message-wrapper from-me">
           <span class="formatted_time">{{formatted_time}}</span>

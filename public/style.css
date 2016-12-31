@@ -1,13 +1,13 @@
-input.collapsible-tables {
+input.collapser {
   display: none;
 }
 
-input.collapsible-tables ~ .conversation-messages {
+input.collapser ~ .collapsible {
+  display: none;
+}
+
+input.collapser:checked ~ .collapsible {
   display: block;
-}
-
-input.collapsible-tables:checked ~ .conversation-messages {
-  display: none;
 }
 
 .message-wrapper {

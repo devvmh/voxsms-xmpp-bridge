@@ -1,15 +1,22 @@
-<select id="send_from_did">
-  <option value="{{did}}">{{did}}</option>
-  {{#each didList as |did index|}}
-    <option value="{{did}}">{{did}}</option>
-  {{/each}}
-</select> <br />
-<input id="send_to_did" type="text" placeholder="To: e.g. 15198460550" /> <br />
-<label>
-  Message: <br />
-  <textarea id="send_message" rows="5" cols="60"></textarea>
-</label> <br />
-<button id="send_submit">Send message</button> <br />
+<div class="collapsible-wrapper">
+  <h4><label for="collapser-send-message">Click here to send an SMS</label></h4>
+  <input type="checkbox" id="collapser-send-message" class="collapser" />
+
+  <div class="collapsible">
+    <select id="send_from_did">
+      <option value="{{did}}">{{did}}</option>
+      {{#each didList as |did index|}}
+        <option value="{{did}}">{{did}}</option>
+      {{/each}}
+    </select> <br />
+    <input id="send_to_did" type="text" placeholder="To: e.g. 15195551234" /> <br />
+    <label>
+      Message: <br />
+      <textarea id="send_message" rows="5" cols="60"></textarea>
+    </label> <br />
+    <button id="send_submit">Send message</button> <br />
+  </div>
+</div>
 
 <script type="text/javascript">
   $('#send_from_did').change(function(e) {
