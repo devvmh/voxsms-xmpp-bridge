@@ -1,0 +1,11 @@
+input.collapsible-tables {
+  display: none;
+}
+
+input.collapsible-tables ~ table {
+  display: none;
+}
+
+input.collapsible-tables:checked ~ table {
+  display: block;
+}

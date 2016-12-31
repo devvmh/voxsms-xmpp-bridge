@@ -11,6 +11,7 @@ const app = express()
 app.use(bodyParser.json()) // for parsing application/json
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
+app.use(express.static('public'))
 
 app.get('/', basicAuthMiddleware, function(req, res) {
   res.redirect('/messages')
