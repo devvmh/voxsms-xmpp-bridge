@@ -3,11 +3,11 @@ input.collapsible-tables {
 }
 
 input.collapsible-tables ~ .conversation-messages {
-  display: none;
+  display: block;
 }
 
 input.collapsible-tables:checked ~ .conversation-messages {
-  display: block;
+  display: none;
 }
 
 .message-wrapper {
