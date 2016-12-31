@@ -5,22 +5,22 @@ const basicAuth = require('express-basic-auth');
 
 const { send, receive, readMessages } = require('./voxbone')
 const { fromDidList, users } = require('./secrets')
+const basicAuthMiddleware = basicAuth({ users, challenge: true })
 
 const app = express()
 app.use(bodyParser.json()) // for parsing application/json
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
-app.use(basicAuth({ users, challenge: true }))
 
-app.get('/', function(req, res) {
+app.get('/', basicAuthMiddleware, function(req, res) {
   res.redirect('/messages')
 })
  
-app.get('/messages', function(req, res) {
+app.get('/messages', basicAuthMiddleware, function(req, res) {
   res.render('messages_index', { didList: fromDidList })
 })
 
-app.get('/messages/:did', function(req, res) {
+app.get('/messages/:did', basicAuthMiddleware, function(req, res) {
   const { did } = req.params
   if (fromDidList.indexOf(did) === -1) {
     res.sendStatus(404)
@@ -34,7 +34,7 @@ app.get('/messages/:did', function(req, res) {
   })
 })
 
-app.post('/send/:did', function (req, res) {
+app.post('/send/:did', basicAuthMiddleware, function (req, res) {
   const { from, msg } = req.body
   const to = req.params.did
 
