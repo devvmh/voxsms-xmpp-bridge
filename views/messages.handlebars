@@ -1,11 +1,11 @@
 <h1>Verdexus SMS Messages</h1>
 
-<select id="send_from_did">
-  <option value="">-- From --</option>
+<select id="non-working-send_from_did">                                           <option value="">-- From --</option>
   {{#each fromDidList}}
     <option value="{{this}}">{{this}}</option>
   {{/each}}
 </select> <br />
+<input id="send_from_did" type="text" placeholder="From" /> <br />
 <input id="send_to_did" type="text" placeholder="To" /> <br />
 <label>
   Message: <br />
@@ -55,6 +55,9 @@
     }).then(response => {
       if (!response.ok) throw response
       return response.json()
-    }).then(console.log).catch(console.error)
+    }).then(payload => {
+      console.log(payload)
+      window.location.reload()
+    }).catch(console.error)
   })
 </script>
