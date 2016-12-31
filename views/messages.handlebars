@@ -1,4 +1,9 @@
-<input id="send_from_did" type="text" placeholder="From" value="{{did}}"/> <br />
+<select id="send_from_did">
+  <option value="{{did}}">{{did}}</option>
+  {{#each fromDidList}}
+    <option value="{{this}}">{{this}}</option>
+  {{/each}}
+</select> <br />
 <input id="send_to_did" type="text" placeholder="To: e.g. 15198460550" /> <br />
 <label>
   Message: <br />
@@ -26,6 +31,10 @@
 </table>
 
 <script type="text/javascript">
+  $('#send_from_did').change(function(e) {
+    const newUrl = `/messages/${$(this).val()}`
+    window.location = newUrl
+  })
   $('#send_submit').click(function(e) {
     const fromDid = $('#send_from_did').val()
     const toDid = $('#send_to_did').val()
