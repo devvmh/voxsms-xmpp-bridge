@@ -21,7 +21,7 @@ app.get('/messages/:did', function(req, res) {
     return
   }
   const messages = readMessages(did)
-  res.render('messages', { messages, [did] })
+  res.render('messages', { messages, fromDidList: [did] })
 })
 
 app.post('/send/:did', function (req, res) {
