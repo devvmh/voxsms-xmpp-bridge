@@ -14,11 +14,11 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', basicAuthMiddleware, function(req, res) {
-  res.redirect('/messages')
+  res.render('index', { didList: fromDidList })
 })
  
 app.get('/messages', basicAuthMiddleware, function(req, res) {
-  res.render('messages_index', { didList: fromDidList })
+  res.redirect('/')
 })
 
 app.get('/messages/:did', basicAuthMiddleware, function(req, res) {

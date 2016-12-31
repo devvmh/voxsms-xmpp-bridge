@@ -1,0 +1,50 @@
+<select id="send_from_did">
+  <option value="{{did}}">{{did}}</option>
+  {{#each didList as |did index|}}
+    <option value="{{did}}">{{did}}</option>
+  {{/each}}
+</select> <br />
+<input id="send_to_did" type="text" placeholder="To: e.g. 15198460550" /> <br />
+<label>
+  Message: <br />
+  <textarea id="send_message" rows="5" cols="60"></textarea>
+</label> <br />
+<button id="send_submit">Send message</button> <br />
+
+<script type="text/javascript">
+  $('#send_from_did').change(function(e) {
+    const newUrl = `/messages/${$(this).val()}`
+    window.location = newUrl
+  })
+  $('#send_submit').click(function(e) {
+    const fromDid = $('#send_from_did').val()
+    const toDid = $('#send_to_did').val()
+    const message = $('#send_message').val()
+    if (!fromDid || !toDid || !message) {
+      alert('Invalid message parameters')
+      return
+    }
+    
+    fetch(`/send/${toDid}`, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        from: fromDid,
+        msg: message
+      })
+    }).then(response => {
+      if (!response.ok) throw response
+      return response.text()
+    }).then(payload => {
+      console.log(payload)
+      window.location.reload()
+    }).catch(error => {
+      alert("Something went wrong")
+      console.error(error)
+    })
+  })
+</script>
