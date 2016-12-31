@@ -12,7 +12,7 @@ const { fromDidList } = require('./secrets')
  
 app.get('/messages', function(req, res) {
   const messages = readMessages()
-  res.render('messages', { messages, fromDidList })
+  res.render('messages', { messages, did: "" })
 })
 
 app.get('/messages/:did', function(req, res) {
@@ -22,7 +22,7 @@ app.get('/messages/:did', function(req, res) {
     return
   }
   const messages = readMessages(did)
-  res.render('messages', { messages, fromDidList: [did] })
+  res.render('messages', { messages, did })
 })
 
 app.post('/send/:did', function (req, res) {

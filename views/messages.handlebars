@@ -1,11 +1,6 @@
 <h1>Verdexus SMS Messages</h1>
 
-<select id="send_from_did">
-  <option value="">-- From --</option>
-  {{#each fromDidList}}
-    <option value="{{this}}">{{this}}</option>
-  {{/each}}
-</select> <br />
+<input id="send_from_did" type="text" placeholder="From" value="{{did}}"/> <br />
 <input id="send_to_did" type="text" placeholder="To: e.g. 15198460550" /> <br />
 <label>
   Message: <br />
