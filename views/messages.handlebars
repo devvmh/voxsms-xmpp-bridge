@@ -50,7 +50,7 @@
       },
       body: JSON.stringify({
         from: fromDid,
-        message
+        msg: message
       })
     }).then(response => {
       if (!response.ok) throw response
