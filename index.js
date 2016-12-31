@@ -1,14 +1,16 @@
 const express = require('express')
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
-const app = express()
+const basicAuth = require('express-basic-auth');
 
+const { send, receive, readMessages } = require('./voxbone')
+const { fromDidList, users } = require('./secrets')
+
+const app = express()
 app.use(bodyParser.json()) // for parsing application/json
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
-
-const { send, receive, readMessages } = require('./voxbone')
-const { fromDidList } = require('./secrets')
+app.use(basicAuth({ users })
 
 app.get('/', function(req, res) {
   res.redirect('/messages')
