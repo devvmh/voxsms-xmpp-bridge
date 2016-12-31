@@ -1,7 +1,7 @@
 <select id="send_from_did">
   <option value="{{did}}">{{did}}</option>
-  {{#each didList}}
-    <option value="{{this}}">{{this}}</option>
+  {{#each didList as |did index|}}
+    <option value="{{did}}">{{did}}</option>
   {{/each}}
 </select> <br />
 <input id="send_to_did" type="text" placeholder="To: e.g. 15198460550" /> <br />
@@ -29,6 +29,28 @@
     {{/each}}
   </tbody>
 </table>
+
+{{#each conversations}}
+  <h4>{{@key}}</h4>
+  <table class="table" style="width: 50%">
+    <thead><tr>
+      <th class="to_did">To</th>
+      <th class="from_did">From</th>
+      <th class="timestamp">Timestamp</th>
+      <th class="message">Message</th>
+    </tr></thead>
+    <tbody>
+      {{#each this}}
+        <tr>
+          <td class="to_did">{{to_did}}</td>
+          <td class="from_did">{{from_did}}</td>
+          <td class="formatted_time">{{formatted_time}}</td>
+          <td class="message">{{message}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/each}}
 
 <script type="text/javascript">
   $('#send_from_did').change(function(e) {

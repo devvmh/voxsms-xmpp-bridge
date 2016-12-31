@@ -26,9 +26,10 @@ app.get('/messages/:did', basicAuthMiddleware, function(req, res) {
     res.sendStatus(404)
     return
   }
-  const messages = readMessages(did)
+  const [messages, conversations] = readMessages(did)
   res.render('messages', {
     messages,
+    conversations,
     did,
     didList: fromDidList.filter(d => d !== did)
   })
