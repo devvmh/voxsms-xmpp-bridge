@@ -11,8 +11,7 @@ const { send, receive, readMessages } = require('./voxbone')
 const { fromDidList } = require('./secrets')
  
 app.get('/messages', function(req, res) {
-  const messages = readMessages()
-  res.render('messages', { messages, did: "" })
+  res.render('messages_index', { didList: fromDidList })
 })
 
 app.get('/messages/:did', function(req, res) {
