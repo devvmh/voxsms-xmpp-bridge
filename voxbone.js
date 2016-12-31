@@ -23,9 +23,13 @@ function receive(to, from, msg) {
   db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
 
-function readMessages() {
+function readMessages(did = null) {
   const allMessages = []
-  db.each(`SELECT to_did, from_did, timestamp, message FROM messages`, function(err, row) {
+  let query = 'SELECT to_did, from_did, timestamp, message FROM messages'
+  if (did !== null) {
+    query += ` WHERE to_did = '${did}' OR from_did = '${did}'`
+  }
+  db.each(query, function(err, row) {
     const { to_did, from_did, timestamp, message } = row
     const formatted_time = new Date(timestamp * 1000).toString().substring(0, 24)
     allMessages.push({ to_did, from_did, formatted_time, message })
