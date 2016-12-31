@@ -8,6 +8,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 const { send, receive, readMessages } = require('./voxbone')
+const { fromDidList } = require('./secrets')
  
 app.post('/send/:did', function (req, res) {
   const { from, msg } = req.body
@@ -20,7 +21,7 @@ app.post('/send/:did', function (req, res) {
 
 app.get('/messages', function(req, res) {
   const messages = readMessages()
-  res.render('messages', { messages })
+  res.render('messages', { messages, fromDidList })
 })
 
 /*
