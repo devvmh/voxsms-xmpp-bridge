@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 
 const { send, receive, readMessages } = require('./internal')
-const { fromDidList, users } = require('./secrets')
+const { didList, users } = require('./secrets')
 const basicAuthMiddleware = basicAuth({ users, challenge: true })
 
 const app = express()
@@ -14,7 +14,7 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', basicAuthMiddleware, function(req, res) {
-  res.render('index', { didList: fromDidList })
+  res.render('index', { didList })
 })
  
 app.get('/messages', basicAuthMiddleware, function(req, res) {
@@ -23,7 +23,7 @@ app.get('/messages', basicAuthMiddleware, function(req, res) {
 
 app.get('/messages/:did', basicAuthMiddleware, function(req, res) {
   const { did } = req.params
-  if (fromDidList.indexOf(did) === -1) {
+  if (didList.indexOf(did) === -1) {
     res.sendStatus(404)
     return
   }
@@ -32,7 +32,7 @@ app.get('/messages/:did', basicAuthMiddleware, function(req, res) {
     messages,
     conversations,
     did,
-    didList: fromDidList.filter(d => d !== did)
+    didList: didList.filter(d => d !== did)
   })
 })
 
