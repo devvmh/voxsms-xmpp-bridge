@@ -18,7 +18,7 @@ function getDate() {
   return (new Date().getTime() / 1000).toFixed(0)
 }
 
-function notifyXmpp(msg, to) {
+function notifyXmpp(to, from, msg) {
   if (!useXmpp) return
 
   // http://xmpp.verdexus.com:5280/msg/devin@xmpp.verdexus.com
@@ -31,7 +31,7 @@ function notifyXmpp(msg, to) {
       'Authorization': 'Basic ' + base64.encode(`${xmppUser}@${xmppUrl}:${xmppPassword}`),
       'Content-Type': 'text/plain'
     },
-    body: `You have a new message for ${to}: ${msg}`
+    body: `You have a new message for ${to} from ${from}: ${msg}`
   }).then(response => {
     return response.text()
   }).then(payload => {
@@ -48,7 +48,7 @@ function send(to, from, msg, dr = 'none') {
 }
 
 function receive(to, from, msg) {
-  notifyXmpp(msg, to)
+  notifyXmpp(to, from, msg)
   db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
 
