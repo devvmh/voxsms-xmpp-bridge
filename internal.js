@@ -47,7 +47,12 @@ function notifyXmpp(to, from, msg) {
 
 function send(to, from, msg, dr = 'none') {
   const fragref = voxbone.createFragRef()
-  voxbone.sendSMS(to, `+${from}`, msg, fragref)
+  const dr = 'none'
+  voxbone.sendSMS(to, `+${from}`, msg, fragref, dr, function(error, response, body) {
+    console.log("Voxbone error: ", error)
+    console.log("Voxbone response: ", response)
+    console.log("Voxbone body: ", body)
+  })
   db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
 
