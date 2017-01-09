@@ -1,5 +1,6 @@
 require('isomorphic-fetch')
 const base64 = require('base-64')
+const xmpp = require('xmppjs')
 
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('messages.sqlite')
@@ -8,7 +9,10 @@ const Voxbone = require('voxbone-voxsms')
 const { apiLogin, apiPassword } = require('./secrets')
 const voxbone = new Voxbone({ apiLogin, apiPassword })
 
-const { useXmpp, xmppUser, xmppPassword, xmppUrl, xmppPort, xmppMappings } = require('./secrets')
+const { useXmpp, xmppUser, xmppPassword, xmppUrl, xmppPort, xmppMappings, reverseXmppMappings } = require('./secrets')
+
+const { smsBotDomain, smsBotPassword } = require('./secrets')
+const conn = new xmpp.Connection()
 
 function sanitize(msg) {
   return msg.replace('"', '\"')
@@ -48,7 +52,8 @@ function send(to, from, msg, dr = 'none') {
 }
 
 function receive(to, from, msg) {
-  notifyXmpp(to, from, msg)
+  //notifyXmpp(to, from, msg)
+  sendMessageToXmpp(to, from, msg)
   db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
 
@@ -73,5 +78,39 @@ function readMessages(did) {
   }), conversations]
 }
 
+function onMessage(message) {
+  const toJid = message.getAttribute('to')
+  const fromJid = message.getAttribute('from')
+  const msg = message.getChild('body').getText()
+
+  const toDid = toJid.replace('@sms.verdexus.com', '')
+  const fromName = fromJid.replace('@xmpp.verdexus.com/phone', '')
+  const fromDid = reverseXmppMappings[fromName]
+
+  console.log(`OK, I got a message from ${fromName}. I'll send a message to ${toDid} from ${fromDid}.`)
+  console.log(`The message is ${msg}.`)
+  send(toDid, fromDid, msg)
+}
+
+function sendMessageToXmpp(toDid, fromDid, msg) {
+  const toName = xmppMappings[toDid]
+  
+  conn.send(xmpp.message({
+    to: `${toName}@xmpp.verdexus.com/phone`,
+    from: `${fromDid}@sms.verdexus.com`,
+    type: 'chat'
+  }).c('body').t(msg))
+}
+
+function initializeConnection() {
+  conn.connect(smsBotDomain, smsBotPassword, function (status, condition) {
+    if (status == xmpp.Status.CONNECTED) {
+      conn.addHandler(onMessage, null, 'message', null, null,  null)
+    } else {
+      conn.log(xmpp.LogLevel.DEBUG, `New connection status: ${status}` + condition ? ` (${condition})` : '')
+    }
+  })
+}
+
 // send 11 digit numbers e.g. 12262201584 for from/to when using send/receive
-module.exports = { send, receive, readMessages }
+module.exports = { send, receive, readMessages, initializeConnection }

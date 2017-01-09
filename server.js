@@ -3,7 +3,7 @@ const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 
-const { send, receive, readMessages } = require('./internal')
+const { send, receive, readMessages, initializeConnection } = require('./internal')
 const { didList, users } = require('./secrets')
 const basicAuthMiddleware = basicAuth({ users, challenge: true })
 
@@ -62,3 +62,4 @@ app.post('/receive/:did', function(req, res) {
 })
  
 app.listen(process.env.PORT || 8080)
+initializeConnection()
