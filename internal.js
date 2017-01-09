@@ -84,7 +84,7 @@ function onMessage(message) {
   const msg = message.getChild('body').getText()
 
   const toDid = toJid.replace('@sms.verdexus.com', '')
-  const fromName = fromJid.replace('@xmpp.verdexus.com/phone', '')
+  const fromName = fromJid.replace(/@xmpp\.verdexus\.com\/.*/, '')
   const fromDid = reverseXmppMappings[fromName]
 
   console.log(`OK, I got a message from ${fromName}. I'll send a message to ${toDid} from ${fromDid}.`)
@@ -96,7 +96,7 @@ function sendMessageToXmpp(toDid, fromDid, msg) {
   const toName = xmppMappings[toDid]
   
   conn.send(xmpp.message({
-    to: `${toName}@xmpp.verdexus.com/phone`,
+    to: `${toName}@xmpp.verdexus.com`,
     from: `${fromDid}@sms.verdexus.com`,
     type: 'chat'
   }).c('body').t(msg))
