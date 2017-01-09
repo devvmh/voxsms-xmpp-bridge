@@ -58,8 +58,8 @@
   })
 
   $(document).ready(function(e) {
-    $('.conversation-header').click(function() {
-      const did = $(this).data('did')
+    $('.conversation-title').click(function() {
+      const did = $(this).find('label').data('did')
       $('#send_to_did').val(did)
     })
     $('#clear_send_to_did').click(function() {
