@@ -25,7 +25,7 @@ function notifyXmpp(msg, to) {
   const who = xmppMappings[to]
   const url = `http://${xmppUrl}:${xmppPort}/msg/${who}@${xmppUrl}`
 
-  fetch('http://xmpp.verdexus.com:5280/msg/devin@xmpp.verdexus.com', {i
+  fetch(url, {
     method: 'POST',
     headers: {
       'Authorization': 'Basic ' + base64.encode(`${xmppUser}@${xmppUrl}:${xmppPassword}`),
