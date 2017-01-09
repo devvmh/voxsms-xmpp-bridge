@@ -47,11 +47,11 @@ function notifyXmpp(to, from, msg) {
 
 function send(to, from, msg, dr = 'none') {
   const fragref = voxbone.createFragRef()
-  const dr = 'none'
   voxbone.sendSMS(to, `+${from}`, msg, fragref, dr, function(error, response, body) {
-    console.log("Voxbone error: ", error)
-    console.log("Voxbone response: ", response)
-    console.log("Voxbone body: ", body)
+    if (parseInt(response.statusCode) >= 400 || error) {
+      console.log("Voxbone error: ", response.statusCode, error)
+      sendMessageToXmpp(from, to, `Message failed! Message was <<${msg}>>, HTTP status code was <<${response.statusCode}>>, error was <<${error}>>.`)
+    }
   })
   db.run(`INSERT INTO messages VALUES ('${to}', '${from}', ${getDate()}, "${sanitize(msg)}")`)
 }
