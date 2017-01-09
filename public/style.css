@@ -11,7 +11,7 @@ input.collapser:checked ~ .collapsible {
 }
 
 .message-wrapper {
-  width: 50%;
+  width: 100%;
   position: relative;
 }
 
