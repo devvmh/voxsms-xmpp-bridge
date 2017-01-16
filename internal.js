@@ -10,6 +10,7 @@ const conn = new xmpp.Connection()
 
 function send(to, from, msg) {
   const fragref = voxbone.createFragRef()
+  const dr = 'none'
   voxbone.sendSMS(to, `+${from}`, msg, fragref, dr, function(transaction_id) {
     console.log(`Message sent: ${msg}. Transaction id is ${transaction_id}.`)
     
