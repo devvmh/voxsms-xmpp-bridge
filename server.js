@@ -1,48 +1,10 @@
 const express = require('express')
-const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
-const basicAuth = require('express-basic-auth');
 
-const { send, receive, readMessages, initializeConnection } = require('./internal')
-const { didList, users } = require('./secrets')
-const basicAuthMiddleware = basicAuth({ users, challenge: true })
+const { receive, initializeConnection } = require('./internal')
 
 const app = express()
 app.use(bodyParser.json()) // for parsing application/json
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
-app.set('view engine', 'handlebars')
-app.use(express.static('public'))
-
-app.get('/', basicAuthMiddleware, function(req, res) {
-  res.render('index', { didList })
-})
- 
-app.get('/messages', basicAuthMiddleware, function(req, res) {
-  res.redirect('/')
-})
-
-app.get('/messages/:did', basicAuthMiddleware, function(req, res) {
-  const { did } = req.params
-  if (didList.indexOf(did) === -1) {
-    res.sendStatus(404)
-    return
-  }
-  const [messages, conversations] = readMessages(did)
-  res.render('messages', {
-    messages,
-    conversations,
-    did,
-    didList: didList.filter(d => d !== did)
-  })
-})
-
-app.post('/send/:did', basicAuthMiddleware, function (req, res) {
-  const { from, msg } = req.body
-  const to = req.params.did
-
-  send(to.replace('+', ''), from.replace('+', ''), msg)
-  res.sendStatus(200)
-})
 
 /*
  * POST /12262201584 HTTP/1.1
@@ -60,6 +22,10 @@ app.post('/receive/:did', function(req, res) {
   receive(to.replace('+', ''), from.replace('+', ''), msg)
   res.sendStatus(200)
 })
+
+/*
+ * MAIN
+ */
  
 app.listen(process.env.PORT || 8080)
 initializeConnection()
