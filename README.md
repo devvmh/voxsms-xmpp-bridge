@@ -36,7 +36,7 @@ Again, I've assumed your domain will be xmpp.example.com and the port will be 80
     curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
     sudo apt-get install nodejs prosody
 
-Find a tutorial to configure prosody and set it up to serve on xmpp.example.com or your equivalent. You'll probably end up with a file called `/etc/prosody/conf.d/xmpp.example.com/cfg.lua. This will have `VirtualHost` blocks an `Component` blocks. Add two lines to this file:
+Find a tutorial to configure prosody and set it up to serve on xmpp.example.com or your equivalent. You'll probably end up with a file called `/etc/prosody/conf.d/xmpp.example.com/cfg.lua`. This will have `VirtualHost` blocks and `Component` blocks. Add two lines to this file:
 
     Component "sms.example.com"
         component_secret = "SMSBotPasswordIsVerySecret"
@@ -75,7 +75,7 @@ Edit secrets.js to look something like this (of course all of your values will l
 
 		module.exports = secrets
 
-I have the code at /root/voxsms-xmpp-bridge. I use this systemd file at `/etc/systemd/system/voxsms-xmpp-bridge.service` to make sure the server stays up. Note that if you are on debian, your node may have a different path (e.g. `/usr/bin/nodejs):
+I have the code at `/root/voxsms-xmpp-bridge`. I use this systemd file at `/etc/systemd/system/voxsms-xmpp-bridge.service` to make sure the server stays up. Note that if you are on debian, your node may have a different path (e.g. `/usr/bin/nodejs):
 
 		[Unit]
 		Description=launch voxsms-xmpp-bridge node server on boot
@@ -90,7 +90,7 @@ I have the code at /root/voxsms-xmpp-bridge. I use this systemd file at `/etc/sy
 		[Install]
 		WantedBy=multi-user.target
 
-This service is configured to log to /var/log/voxsms-xmpp-bridge.log - you might want to set up logrotate.d to rotate this file. To enable the service:
+This service is configured to log to `/var/log/voxsms-xmpp-bridge.log` - you might want to set up logrotate.d to rotate this file. To enable the service:
 
     systemctl daemon-reload
     systemctl enable voxsms-xmpp-bridge
