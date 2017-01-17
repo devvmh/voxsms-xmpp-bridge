@@ -32,6 +32,7 @@ function send(to, from, msg) {
 function receive(toDid, fromDid, msg) {
   const toName = xmppMappings[toDid]
   
+  console.log(`Message received: to: ${toDid}, from: ${fromDid}, msg: <<${msg}>>.`)
   conn.send(xmpp.message({
     to: `${toName}@${xmppDomain}`,
     from: `${fromDid}@${smsBotDomain}`,
