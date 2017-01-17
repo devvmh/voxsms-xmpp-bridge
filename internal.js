@@ -1,3 +1,4 @@
+const escapeRegexp = require('lodash.escaperegexp')
 const xmpp = require('xmppjs')
 const Voxbone = require('voxbone-voxsms')
 const { 
@@ -44,8 +45,7 @@ function onMessage(message) {
   const msg = message.getChild('body').getText()
 
   const toDid = toJid.replace(`@${smsBotDomain}`, '')
-  // TODO fix regex
-  const fromName = fromJid.replace(/@xmpp\.verdexus\.com\/.*/, '')
+  const fromName = fromJid.replace(new RegExp(`@${escapeRegexp(xmppUrl)}.*`), '')
   const fromDid = reverseXmppMappings[fromName]
 
   send(toDid, fromDid, msg)
