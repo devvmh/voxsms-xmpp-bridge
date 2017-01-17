@@ -3,7 +3,7 @@ const xmpp = require('xmppjs')
 const Voxbone = require('voxbone-voxsms')
 const { 
   apiLogin, apiPassword, smsBotDomain, smsBotPassword,
-  xmppUrl, xmppPort, xmppMappings, reverseXmppMappings
+  xmppDomain, xmppPort, xmppMappings, reverseXmppMappings
 } = require('./secrets')
 
 const voxbone = new Voxbone({ apiLogin, apiPassword })
@@ -21,7 +21,7 @@ function send(to, from, msg) {
       const fromName = xmppMappings[from]
 
       conn.send(xmpp.message({
-        to: `${fromName}@${xmppUrl}`,
+        to: `${fromName}@${xmppDomain}`,
         from: `${to}@${smsBotDomain}`,
         type: 'chat'
       }).c('body').t(`Message failed! Message was <<${msg}>>, HTTP status code was <<${statusCode}>>.`))
@@ -33,7 +33,7 @@ function receive(toDid, fromDid, msg) {
   const toName = xmppMappings[toDid]
   
   conn.send(xmpp.message({
-    to: `${toName}@${xmppUrl}`,
+    to: `${toName}@${xmppDomain}`,
     from: `${fromDid}@${smsBotDomain}`,
     type: 'chat'
   }).c('body').t(msg))
@@ -45,7 +45,7 @@ function onMessage(message) {
   const msg = message.getChild('body').getText()
 
   const toDid = toJid.replace(`@${smsBotDomain}`, '')
-  const fromName = fromJid.replace(new RegExp(`@${escapeRegexp(xmppUrl)}.*`), '')
+  const fromName = fromJid.replace(new RegExp(`@${escapeRegexp(xmppDomain)}.*`), '')
   const fromDid = reverseXmppMappings[fromName]
 
   send(toDid, fromDid, msg)
