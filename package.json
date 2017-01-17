@@ -12,6 +12,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-basic-auth": "^0.2.3",
+    "lodash.escaperegexp": "^4.1.2",
     "voxbone-voxsms": "^1.2.0",
     "xmppjs": "^1.0.0"
   }
