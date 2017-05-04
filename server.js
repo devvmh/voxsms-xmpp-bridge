@@ -23,6 +23,10 @@ app.post('/receive/:did', function(req, res) {
   res.sendStatus(200)
 })
 
+app.get('/status', function(req, res) {
+  res.sendStatus(200)
+})
+
 /*
  * MAIN
  */
