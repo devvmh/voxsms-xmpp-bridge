@@ -1,4 +1,5 @@
 const escapeRegexp = require('lodash.escaperegexp')
+const nslookup = require('nslookup')
 const xmpp = require('xmppjs')
 const Voxbone = require('voxbone-voxsms')
 const { 
@@ -6,8 +7,35 @@ const {
   xmppDomain, xmppPort, xmppMappings, reverseXmppMappings
 } = require('./secrets')
 
-const voxbone = new Voxbone({ apiLogin, apiPassword })
 const conn = new xmpp.Connection()
+
+let serverIP = 'sms.voxbone.com'
+let voxbone
+
+// see https://github.com/voxbone/voxsms-npm/issues/1
+// provided we can look one up, use a fixed IP for voxbone
+// otherwise fallback to te URL, which sometimes gets 401 errors
+function initializeVoxbone() {
+  return new Promise((resolve, reject) => {
+    nslookup('sms.voxbone.com').end((err, addrs) => {
+      if (!err && addrs.length >= 1) {
+        serverIP = addrs[0]
+        console.log(`initializeVoxbone: Setting DNS address to ${serverIP}`)
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+        console.log('initializeVoxbone: Disabling TLS identity checking')
+      } else {
+        console.log(`initializeVoxbone: Can't nslookup voxbone! error: ${error}`)
+      }
+
+      voxbone = new Voxbone({
+        apiLogin,
+        apiPassword,
+        url: `https://${serverIP}:4443/sms/v1/`
+      })
+      resolve() // ready to start using voxbone
+    })
+  })
+}
 
 function send(to, from, msg) {
   const fragref = voxbone.createFragRef()
@@ -62,4 +90,4 @@ function initializeConnection() {
   })
 }
 
-module.exports = { receive, initializeConnection }
+module.exports = { receive, initializeConnection, initializeVoxbone }
