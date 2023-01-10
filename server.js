@@ -1,6 +1,9 @@
-const express = require('express')
 const bodyParser = require('body-parser');
+const express = require('express')
+const https = require('https')
+const fs = require('mz/fs')
 
+const { httpsKeyFile, httpsCertFile } = require('./secrets')
 const { receive, initializeConnection, initializeVoxbone } = require('./internal')
 
 const app = express()
@@ -33,5 +36,17 @@ app.get('/status', function(req, res) {
  
 initializeVoxbone().then(() => {
   initializeConnection()
-  app.listen(process.env.PORT || 8080)
+
+  const httpServer = app.listen(process.env.HTTP_PORT || 8080)
+  console.log(`Started http server on ${process.env.HTTP_PORT || 8080}`)
+
+  if (httpsKeyFile && httpsCertFile) {
+    Promise.all([
+      fs.readFile(httpsKeyFile),
+      fs.readFile(httpsCertFile)
+    ]).then(([key, cert]) => {
+      const httpsServer = https.createServer({ key, cert }, app).listen(process.env.HTTPS_PORT || 8443)
+      console.log(`Started https server on ${process.env.HTTPS_PORT || 8443}`)
+    });
+  }
 })

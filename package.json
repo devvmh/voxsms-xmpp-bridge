@@ -9,12 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "express-basic-auth": "^0.2.3",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1",
+    "https": "^1.0.0",
     "lodash.escaperegexp": "^4.1.2",
+    "mz": "^2.7.0",
     "nslookup": "^1.1.1",
-    "voxbone-voxsms": "^1.2.0",
+    "voxbone-voxsms": "github:voxbone/voxsms-npm#dependabot/npm_and_yarn/request-2.88.2",
     "xmppjs": "^1.0.0"
   }
 }
